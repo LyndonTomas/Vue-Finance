@@ -7,10 +7,9 @@ class OrdersService {
   // Done
   static getPosts() {
     return new Promise((resolve, reject) => {
-      axios
-        .get(url)
+      axios.get(url)
         .then((res) => {
-          const data = res.data;
+          const data = res.data.orders;
           resolve(
             data.map((post) => ({
               _id: post._id,

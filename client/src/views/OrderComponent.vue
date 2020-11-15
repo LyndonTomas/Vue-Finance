@@ -12,9 +12,15 @@
 
     <!-- place greetings here -->
 
+    <div id="refresh">
+      <button class="btn btn-info" @click="refresh">Refresh</button>
+    </div>
+
     <div class="logout">
       <button v-on:click="logOut" class="btn btn-warning">LogOut</button>
     </div>
+
+    
 
     <div class="entries">
       <label for=""
@@ -24,7 +30,6 @@
     <!-- Date -->
     <span>
       <input id="dateInput" v-model="date" type="date" @change="dateClicked" />
-      {{ date }}
     </span>
 
     <table id="orderTable" class="table w-auto table-responsive-xl">
@@ -76,7 +81,9 @@
               <option value="Paid">Paid</option>
             </select>
           </td>
-          <td>{{ order.order_status }}</td>
+          <td><input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="delivered" checked>
+          Delivered
+          </td>
           <td>
             &#8369; &nbsp;
             <strong>{{
@@ -113,7 +120,7 @@
             <button
               title="Delete Order"
               class="btn btn-danger"
-              v-on:click="deletePostV2(order.is_deleted)"
+              v-on:click="deletePost(order._id)"
             >
               <i class="fas fa-trash"></i>
             </button>
@@ -138,6 +145,7 @@ export default {
       text: "",
       deleted: null,
       date: "",
+      delivered:""
     };
   },
   props: ["username"],
@@ -149,13 +157,13 @@ export default {
     }
   },
   methods: {
+    refresh(){
+      window.location.reload()
+    },
     async dateClicked() {
       this.orders = await OrdersService.dateClicked(this.date).then(
         (res) => res.data.orders
       );
-    },
-    deletePostV2(item) {
-      this.deleted = !item;
     },
     async deletePost(id) {
       var choice = confirm(
@@ -295,10 +303,15 @@ export default {
     place-items: center;
   }
   .logout {
+    display:inline-block;
     position: relative;
-    margin-left: 110%;
+    float:right;
   }
 
+  #refresh{
+    display:inline-block;
+    float:right;
+  }
   .entries {
     margin: 0px, 0px, 0px, 50px;
     left: 5px;
